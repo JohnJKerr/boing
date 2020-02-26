@@ -23,10 +23,12 @@ public class Bat : KinematicBody2D
 	private void Move()
 	{
 		_motion.y = 0;
-		if (Input.IsActionPressed("up")) _motion.y -= Speed;
-		if (Input.IsActionPressed("down")) _motion.y += Speed;
+		if (IsActionPressed("up")) _motion.y -= Speed;
+		if (IsActionPressed("down")) _motion.y += Speed;
 		MoveAndSlide(_motion);
 	}
+
+	private bool IsActionPressed(string name) => Input.IsActionPressed(name + _playerNumber);
 
 	private void SetTexture(int number = 0)
 	{
