@@ -2,6 +2,6 @@ namespace boing
 {
 	public interface IController
 	{
-		void UpdateMotion(IMovable movable);
+		void Control(IMovable movable);
 	}
 }

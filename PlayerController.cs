@@ -11,13 +11,11 @@ namespace boing
 			_playerNumber = playerNumber;
 		}
 		
-		public void UpdateMotion(IMovable movable)
+		public void Control(IMovable movable)
 		{
 			bool IsActionPressed(string name) => Input.IsActionPressed(name + _playerNumber);
-			var motion = Vector2.Zero;
-			if (IsActionPressed("up")) motion.y -= movable.Speed;
-			if (IsActionPressed("down")) motion.y += movable.Speed;
-			movable.Motion = motion;
+			if (IsActionPressed("up")) movable.Move(Direction.Up);
+			if (IsActionPressed("down")) movable.Move(Direction.Down);
 		}
 	}
 }

@@ -53,8 +53,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AIController.cs" />
     <Compile Include="Ball.cs" />
     <Compile Include="Bat.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="IControllable.cs" />
     <Compile Include="IController.cs" />
     <Compile Include="IMovable.cs" />

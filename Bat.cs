@@ -4,6 +4,8 @@ using boing;
 
 public class Bat : KinematicBody2D, IMovable, IControllable
 {
+	private const int _speed = 200;
+	private Vector2 _motion = Vector2.Zero;
 	[Export] private int _playerNumber = 0;
 
 	private Sprite Sprite => GetNode<Sprite>(nameof(Sprite));
@@ -17,13 +19,7 @@ public class Bat : KinematicBody2D, IMovable, IControllable
 	public override void _Process(float delta)
 	{
 		base._Process(delta);
-		Move();
-	}
-
-	private void Move()
-	{
-		Controller.UpdateMotion(this);
-		MoveAndSlide(Motion);
+		Controller.Control(this);
 	}
 
 	private void SetTexture(int number = 0)
@@ -32,7 +28,12 @@ public class Bat : KinematicBody2D, IMovable, IControllable
 		Sprite.Texture = texture;
 	}
 
-	public int Speed { get; } = 200;
-	public Vector2 Motion { get; set; } = Vector2.Zero;
 	public IController Controller { get; private set; }
+	public void Move(Direction direction)
+	{
+		_motion = Vector2.Zero;
+		if (direction.Equals(Direction.Up)) _motion.y -= _speed;
+		if (direction.Equals(Direction.Down)) _motion.y += _speed;
+		MoveAndSlide(_motion);
+	}
 }
