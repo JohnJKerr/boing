@@ -1,17 +1,17 @@
 using Godot;
 using System;
+using boing;
 
-public class Bat : KinematicBody2D
+public class Bat : KinematicBody2D, IMovable, IControllable
 {
-	private const int Speed = 200;
 	[Export] private int _playerNumber = 0;
-	private Vector2 _motion = Vector2.Zero;
 
 	private Sprite Sprite => GetNode<Sprite>(nameof(Sprite));
 
 	public override void _Ready()
 	{
 		SetTexture();
+		Controller = new PlayerController(_playerNumber);
 	}
 
 	public override void _Process(float delta)
@@ -22,16 +22,8 @@ public class Bat : KinematicBody2D
 
 	private void Move()
 	{
-		CaptureInput();
-		MoveAndSlide(_motion);
-	}
-
-	private void CaptureInput()
-	{
-		bool IsActionPressed(string name) => Input.IsActionPressed(name + _playerNumber);
-		_motion.y = 0;
-		if (IsActionPressed("up")) _motion.y -= Speed;
-		if (IsActionPressed("down")) _motion.y += Speed;
+		Controller.UpdateMotion(this);
+		MoveAndSlide(Motion);
 	}
 
 	private void SetTexture(int number = 0)
@@ -39,4 +31,8 @@ public class Bat : KinematicBody2D
 		var texture = ResourceLoader.Load($"res://gfx/bat{_playerNumber}/bat{_playerNumber}{number}.png") as Texture;
 		Sprite.Texture = texture;
 	}
+
+	public int Speed { get; } = 200;
+	public Vector2 Motion { get; set; } = Vector2.Zero;
+	public IController Controller { get; private set; }
 }
