@@ -4,6 +4,6 @@ namespace boing
 {
 	public interface IControllable
 	{
-		IController Controller { get; }
+		IController Controller { get; set; }
 	}
 }

@@ -4,16 +4,16 @@ namespace boing
 {
 	public class PlayerController : IController
 	{
-		private readonly int _playerNumber;
+		private readonly Bat _bat;
 		
-		public PlayerController(int playerNumber)
+		public PlayerController(Bat bat)
 		{
-			_playerNumber = playerNumber;
+			_bat = bat;
 		}
 		
 		public void Control(IMovable movable)
 		{
-			bool IsActionPressed(string name) => Input.IsActionPressed(name + _playerNumber);
+			bool IsActionPressed(string name) => Input.IsActionPressed(name + _bat.PlayerNumber);
 			if (IsActionPressed("up")) movable.Move(Direction.Up);
 			if (IsActionPressed("down")) movable.Move(Direction.Down);
 		}

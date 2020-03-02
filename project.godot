@@ -51,6 +51,7 @@ down1={
 
 2d_physics/layer_1="Bat"
 2d_physics/layer_2="Ball"
+2d_physics/layer_3="Walls"
 
 [rendering]
 
