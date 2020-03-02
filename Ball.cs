@@ -3,11 +3,17 @@ using System;
 
 public class Ball : KinematicBody2D
 {
-    private const int MaxSpeed = 50;
-    private const int StartSpeed = 10;
+    private const int MaxSpeed = 20;
+    private const int StartSpeed = 5;
     private int _speed = StartSpeed;
     private Vector2 _motion = Vector2.Zero;
     private Vector2 _startPosition;
+    private readonly Random _random;
+
+    public Ball()
+    {
+        _random = new Random();
+    }
 
     public override void _Ready()
     {
@@ -18,7 +24,7 @@ public class Ball : KinematicBody2D
 
     private void Start()
     {
-        var direction = new Random().Next() <= 0.5 ? Vector2.Left : Vector2.Right;
+        var direction = _random.Next(2) <= 0.5 ? Vector2.Left : Vector2.Right;
         _motion = direction;
     }
 
@@ -39,7 +45,7 @@ public class Ball : KinematicBody2D
     {
         var collisionInfo = MoveAndCollide(_motion * _speed);
         if (collisionInfo == default) return;
-        if(_speed < MaxSpeed) _speed += 5;
+        if(_speed < MaxSpeed) _speed += 1;
         var collisionMotion = collisionInfo.Normal;
         if (collisionInfo.Collider is Bat bat)
         {
