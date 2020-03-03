@@ -45,9 +45,24 @@ public class Ball : KinematicBody2D
     {
         var collisionInfo = MoveAndCollide(_motion * _speed);
         if (collisionInfo == default) return;
+        Collide(collisionInfo);
+    }
+
+    private void Collide(KinematicCollision2D collision)
+    {
+        GetFaster();
+        Bounce(collision);
+    }
+
+    private void GetFaster()
+    {
         if(_speed < MaxSpeed) _speed += 1;
-        var collisionMotion = collisionInfo.Normal;
-        if (collisionInfo.Collider is Bat bat)
+    }
+
+    private void Bounce(KinematicCollision2D collision)
+    {
+        var collisionMotion = collision.Normal;
+        if (collision.Collider is Bat bat)
         {
             var difference = Position.y - bat.Position.y;
             var deflection = difference / bat.Height;
@@ -57,5 +72,31 @@ public class Ball : KinematicBody2D
 
         collisionMotion.y = Math.Min(Math.Max(collisionMotion.y, -1), 1);
         _motion = _motion.Bounce(collisionMotion).Normalized();
+        PlayBounceSound();
+    }
+
+    private void PlayBounceSound()
+    {
+        const string sound = "Hit";
+        var defaultPlayer = GetNode<AudioStreamPlayer2D>($"SFX/{sound}");
+        defaultPlayer.Play();
+    }
+
+    private class Speed
+    {
+        private readonly int _speed;
+        
+        private Speed(int speed, string name)
+        {
+            _speed = speed;
+            Name = name;
+        }
+
+        public string Name { get; }
+        
+        private static Speed Slow = new Speed(StartSpeed, nameof(Slow));
+        private static Speed Medium = new Speed(MaxSpeed / 2, nameof(Medium));
+        private static Speed Fast = new Speed(MaxSpeed - StartSpeed, nameof(Fast));
+        private static Speed VeryFast = new Speed(MaxSpeed, nameof(VeryFast));
     }
 }
