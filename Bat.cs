@@ -11,11 +11,13 @@ public class Bat : KinematicBody2D, IMovable, IControllable
 	private AnimationPlayer AnimationPlayer => GetNode<AnimationPlayer>(nameof(AnimationPlayer));
 	
 	[Export] public int PlayerNumber { get; private set; } = 0;
+	[Export] public AvailableGoal GoalDefended { get; private set; }
+
 	public float Height => Sprite.Texture.GetSize().y;
 
 	public override void _Ready()
 	{
-		AddToGroup(nameof(Goal));
+		AddToGroup(nameof(Game));
 		SetTexture();
 		Controller = new PlayerController(this);
 		_startingPosition = Position;
@@ -46,5 +48,22 @@ public class Bat : KinematicBody2D, IMovable, IControllable
 	{
 		Position = new Vector2(_startingPosition.x, Position.y);
 		AnimationPlayer.Play(nameof(Hit).ToLower());
+	}
+	
+	public void Goal(Goal goal)
+	{
+		if(GoalDefended.ToString() == goal.Name)
+			Conceded();
+	}
+
+	public void Conceded()
+	{
+		AnimationPlayer.Play(nameof(Conceded).ToLower());
+	}
+
+	public enum AvailableGoal
+	{
+		Left,
+		Right
 	}
 }

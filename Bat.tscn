@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://gfx/bat0/bat00.png" type="Texture" id=1]
 [ext_resource path="res://Bat.cs" type="Script" id=2]
@@ -7,7 +7,8 @@
 height = 97.319
 
 [sub_resource type="Animation" id=2]
-resource_name = "hit"
+resource_name = "conceded"
+length = 2.0
 tracks/0/type = "method"
 tracks/0/path = NodePath(".")
 tracks/0/interp = 1
@@ -15,7 +16,26 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.1, 1 ),
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ 2 ],
+"method": "SetTexture"
+}, {
+"args": [ 0 ],
+"method": "SetTexture"
+} ]
+}
+
+[sub_resource type="Animation" id=3]
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ 1 ],
@@ -37,4 +57,5 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/hit = SubResource( 2 )
+anims/conceded = SubResource( 2 )
+anims/hit = SubResource( 3 )

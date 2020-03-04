@@ -36,6 +36,7 @@ position = Vector2( 61.9412, 360 )
 [node name="Bat2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 740, 120 )
 PlayerNumber = 1
+GoalDefended = 1
 
 [node name="Ball" parent="." instance=ExtResource( 3 )]
 position = Vector2( 400, 240 )
