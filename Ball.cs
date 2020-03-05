@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Linq;
+using System.Reflection;
 
 public class Ball : KinematicBody2D
 {
@@ -9,6 +11,7 @@ public class Ball : KinematicBody2D
     private Vector2 _motion = Vector2.Zero;
     private Vector2 _startPosition;
     private readonly Random _random;
+    private Speed CurrentSpeed => Speed.GetByValue(_speed);
 
     public Ball()
     {
@@ -80,11 +83,17 @@ public class Ball : KinematicBody2D
         const string sound = "Hit";
         var defaultPlayer = GetNode<AudioStreamPlayer2D>($"SFX/{sound}");
         defaultPlayer.Play();
+        var additionalPlayer = GetNode<AudioStreamPlayer2D>($"SFX/Hit{CurrentSpeed.Name}");
+        additionalPlayer.Play();
     }
 
     private class Speed
     {
         private readonly int _speed;
+
+        private Speed()
+        {
+        }
         
         private Speed(int speed, string name)
         {
@@ -98,5 +107,16 @@ public class Ball : KinematicBody2D
         private static Speed Medium = new Speed(MaxSpeed / 2, nameof(Medium));
         private static Speed Fast = new Speed(MaxSpeed - StartSpeed, nameof(Fast));
         private static Speed VeryFast = new Speed(MaxSpeed, nameof(VeryFast));
+
+        internal static Speed GetByValue(int speed)
+        {
+            var type = typeof(Speed);
+            var fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly);
+            var instance = new Speed();
+            var values = fields
+                .Select(f => f.GetValue(instance) as Speed)
+                .OrderByDescending(s => s._speed);
+            return values.First(v => v._speed <= speed);
+        }
     }
 }
