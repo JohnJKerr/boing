@@ -62,6 +62,7 @@
     <Compile Include="IControllable.cs" />
     <Compile Include="IController.cs" />
     <Compile Include="IMovable.cs" />
+    <Compile Include="Overlay.cs" />
     <Compile Include="PlayerController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
